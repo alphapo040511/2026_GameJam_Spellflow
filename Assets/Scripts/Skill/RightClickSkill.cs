@@ -5,26 +5,27 @@ public class RightClickSkill : SkillBase
 {
     public Projectile projectile;
 
-    float preDelay = 0.7f;
-    float postDelay = 0.5f;
+    public float preDelay = 0.7f;
+    public float postDelay = 0.8f;
 
-    protected override void OnStart()
+    protected override IEnumerator Run()
     {
-        StartCoroutine(Delay());
-    }
+        _owner.SetState(PlayerStateType.Attack);
 
-    IEnumerator Delay()
-    {
         yield return new WaitForSeconds(preDelay);
 
         _owner.animator.SetAnim(3);
+
         yield return new WaitForSeconds(postDelay);
+
         Instantiate(projectile, transform.position, transform.rotation);
 
-        Finish();
+        _owner.SetState(PlayerStateType.Idle);
+
+        routine = null;
     }
 
-    protected override void OnFinish()
+    protected override void OnCancel()
     {
 
     }

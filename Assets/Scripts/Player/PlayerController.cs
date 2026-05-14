@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
@@ -10,12 +11,21 @@ public class PlayerController : MonoBehaviour, IDamageable
     [Header("Combat Settings")]
     public int maxHp = 5;
     public int currentHp;
+    public Image hpBar;
 
     [Header("Camera Settings")]
     public Transform cameraTransform;
 
+    [Header("Ground Settings")]
+    [SerializeField] float groundCheckDistance = 1.2f;
+    [SerializeField] float groundSnapSpeed = 10f;
+    [SerializeField] LayerMask groundMask;
     public PlayerAnim animator { get; set; }
     private Rigidbody rigidbody;
+
+    public PlayerCombat PlayerCombat;
+
+    public bool invincibility = false;
 
     Dictionary<PlayerStateType, IPlayerState> playerStates = new();
 
@@ -50,6 +60,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void FixedUpdate()
     {
         playerState?.StateFixedUpdate();
+        GroundSnap();
     }
 
     #endregion
@@ -72,7 +83,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (CurState == newState) return;
         if (!playerStates.ContainsKey(newState)) return;
 
-        Debug.Log($"{newState}로 상태 변경");
+        //Debug.Log($"{newState}로 상태 변경");
 
         playerState?.StateExit();
         playerState = playerStates[newState];
@@ -109,6 +120,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
+            if (inputDirection.sqrMagnitude >= 0.01f)
+                transform.forward = inputDirection;
             SetState(PlayerStateType.Roll);
         }
     }
@@ -125,10 +138,28 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             Vector3 vel = inputDirection * normalSpeed;
             float yVel = rigidbody.linearVelocity.y;
+            vel.y = yVel;
             rigidbody.linearVelocity = vel;
         }
 
         Rotate();
+    }
+
+    void GroundSnap()
+    {
+        Ray ray = new Ray(transform.position + Vector3.up * 0.2f, Vector3.down);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, groundCheckDistance, groundMask))
+        {
+            Vector3 pos = rigidbody.position;
+
+            // 현재 y를 바닥 높이에 맞춰 보정
+            float targetY = hit.point.y;
+
+            pos.y = Mathf.Lerp(pos.y, targetY, Time.fixedDeltaTime * groundSnapSpeed);
+
+            rigidbody.position = pos;
+        }
     }
 
     public void MovementToDir(Vector3 dir, float speed)
@@ -198,7 +229,10 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void ApplyDamage(int damage)
     {
+        if (invincibility) return;
+
         currentHp -= damage;
+        hpBar.fillAmount = currentHp / (float)maxHp;
         if (currentHp <= 0) SetState(PlayerStateType.Dead);
     }
 }

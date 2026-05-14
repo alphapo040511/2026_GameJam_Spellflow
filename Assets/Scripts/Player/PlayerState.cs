@@ -85,7 +85,8 @@ public class RollState : IPlayerState
     float time = 0;
     Vector3 dir;
     float rollDuration = 0.8f;
-    float rollSpeed = 10f;
+    float invincibilityTime = 0.3f;
+    float rollSpeed = 16f;
 
     public RollState(PlayerController owner)
     {
@@ -94,6 +95,7 @@ public class RollState : IPlayerState
     public void StateEnter()
     {
         _owner.animator.SetAnim(7);
+        _owner.invincibility = true;
         dir = _owner.transform.forward.normalized;
         time = 0;
     }
@@ -108,6 +110,11 @@ public class RollState : IPlayerState
         _owner.MovementToDir(dir, rollSpeed);
         time += Time.fixedDeltaTime;
 
+        if(time >= invincibilityTime)
+        {
+            _owner.invincibility = false;
+        }
+
         if(time >= rollDuration)
         {
             _owner.SetState(PlayerStateType.Idle);
@@ -116,7 +123,7 @@ public class RollState : IPlayerState
 
     public void StateExit()
     {
-
+        _owner.invincibility = false;
     }
 }
 
@@ -125,6 +132,7 @@ public class AttackState : IPlayerState
     public PlayerStateType state => PlayerStateType.Attack;
 
     PlayerController _owner;
+
     public AttackState(PlayerController owner)
     {
         _owner = owner;
@@ -134,6 +142,7 @@ public class AttackState : IPlayerState
     {
         _owner.SetRigidLock();
         _owner.animator.SetAnim(2);
+        _owner.PlayerCombat.StateEnter();
     }
 
     public void StateUpdate()
@@ -149,7 +158,8 @@ public class AttackState : IPlayerState
 
     public void StateExit()
     {
-
+        _owner.PlayerCombat.CancelSkill();
+        _owner.PlayerCombat.StateExit();
     }
 }
 
