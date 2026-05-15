@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class IdleDragonState : IDragonState
 {
@@ -217,6 +218,71 @@ public class ClawDragonState : IDragonState
     }
 
     public void StateFixedUpdate() { }
+
+    public void StateExit()
+    {
+        _owner.isActionLocked = false;
+        _owner.claw.SetActive(false);
+    }
+}
+
+public class DashDragonState : IDragonState
+{
+    public DragonStateType state => DragonStateType.Dash;
+
+    DragonController _owner;
+    Rigidbody rb => _owner.RB;
+    Transform target => _owner.Target;
+    float stopDistance = 25.0f;
+
+    float timer;
+
+    public DashDragonState(DragonController owner)
+    {
+        _owner = owner;
+    }
+
+    public void StateEnter()
+    {
+        _owner.animator.SetBool("Dash", true);
+        rb.linearVelocity = Vector3.zero;
+        _owner.claw.SetActive(true);
+        _owner.isActionLocked = true;
+        timer = 3;
+    }
+
+    public void StateUpdate()
+    {
+
+    }
+
+    public void StateFixedUpdate() 
+    {
+
+        if (target == null) return;
+
+        Vector3 dir = (target.position - _owner.transform.position);
+        dir.y = 0;
+
+        float dist = dir.magnitude;
+
+        // 가까우면 멈춤
+        if (dist <= stopDistance)
+        {
+            _owner.animator.SetBool("Dash", false);
+            rb.linearVelocity = Vector3.zero;
+
+            _owner.SetState(DragonStateType.Idle);
+
+            return;
+        }
+
+        dir.Normalize();
+
+        // 이동
+        Vector3 move = dir * _owner.dashSpeed;
+        rb.linearVelocity = move;
+    }
 
     public void StateExit()
     {

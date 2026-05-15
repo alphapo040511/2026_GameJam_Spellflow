@@ -8,6 +8,7 @@ public enum DragonStateType
     BasicAttack,
     Claw,
     Flame,
+    Dash,
     Hit,
     Dead
 }

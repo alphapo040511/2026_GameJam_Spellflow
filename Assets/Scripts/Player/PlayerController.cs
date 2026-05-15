@@ -174,13 +174,16 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Rotate()
     {
-        Quaternion targetRot = Quaternion.LookRotation(inputDirection, Vector3.up);
+        if (inputDirection.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(inputDirection, Vector3.up);
 
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            targetRot,
-            10f * Time.deltaTime
-        );
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRot,
+                10f * Time.deltaTime
+            );
+        }
     }
 
     public void LookForward()

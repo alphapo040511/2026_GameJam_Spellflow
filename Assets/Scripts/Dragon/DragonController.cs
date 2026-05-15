@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class DragonController : MonoBehaviour, IDamageable
+public class DragonController : MonoBehaviour
 {
     [Header("Target")]
     public Transform player;
 
     [Header("Movement Settings")]
     public float normalSpeed = 10f;
+    public float dashSpeed = 16f;
     public float rotateSpeed = 10f;
 
     [Header("Combat Settings")]
@@ -34,6 +35,8 @@ public class DragonController : MonoBehaviour, IDamageable
     private float lastActionTime;
 
     bool playerFind = false;
+
+    public AudioSource scream;
 
     void Awake()
     {
@@ -80,11 +83,12 @@ public class DragonController : MonoBehaviour, IDamageable
         {
             playerFind = true;
             animator.SetTrigger("Scream");
+            scream.Play();
             lastActionTime = Time.time;
             return;
         }
 
-        actionInteraval = 5;
+        actionInteraval = 4;
 
         // 방향 바라보기 (항상)
         //Vector3 dir = (player.position - transform.position);
@@ -111,10 +115,23 @@ public class DragonController : MonoBehaviour, IDamageable
             return;
         }
 
+        if(dist >= 30)
+        {
+            float ratio = dist / 60f;       // 멀어질 수록 대쉬 확률 증가
+            if (Random.value < ratio)
+            {
+                SetState(DragonStateType.Dash);
+
+                actionInteraval = 2f;
+                lastActionTime = Time.time;
+                return;
+            }
+        }
+
         // =========================
-        // 2) 중거리 구간 (5~15)
+        // 2) 중거리 구간 (23~40)
         // =========================
-        if (dist <= 35f)
+        if (dist <= 40f)
         {
             float rand = Random.value;
 
@@ -132,12 +149,13 @@ public class DragonController : MonoBehaviour, IDamageable
         }
 
         // =========================
-        // 3) 추적 구간 (15~50)
-        // =========================
-        if (dist <= 50f)
-        {
-            SetState(DragonStateType.Move);
-        }
+        // 3) 돌진 또는 근접
+        // =========================        
+
+        SetState(DragonStateType.Move);
+
+        actionInteraval = 2f;
+        lastActionTime = Time.time;
     }
 
     void InitFSM()

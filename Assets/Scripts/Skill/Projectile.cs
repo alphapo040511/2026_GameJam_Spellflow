@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public GameObject VFX;
     public float moveSpeed = 20f;
     public int damage = 5;
 
@@ -28,7 +29,7 @@ public class Projectile : MonoBehaviour
             Vector3 hitPoint = other.ClosestPoint(transform.position);
             DamagePopupManager.Instance.ShowDamage(hitPoint, damage);
 
-            Destroy(gameObject);
+            VFX.SetActive(false);
         }
     }
 }
