@@ -7725,7 +7725,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DragonController
   player: {fileID: 1882196367}
   normalSpeed: 8
-  dashSpeed: 10
+  dashSpeed: 16
   rotateSpeed: 10
   maxHp: 300
   currentHp: 0
@@ -16882,6 +16882,101 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1054329259130750322, guid: ce350acbeed68a34db38eaf0551ea452, type: 3}
   m_PrefabInstance: {fileID: 1280507271}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1280705852
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1882196367}
+    m_Modifications:
+    - target: {fileID: 22045843870513408, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 890877752657374954, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2979407750726019859, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: m_Name
+      value: Regeneration_health_loop
+      objectReference: {fileID: 0}
+    - target: {fileID: 4316499902380511589, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6237476615613521980, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6609209799767082117, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7279840187945874343, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+--- !u!4 &1280705853 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1943407851878527666, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+  m_PrefabInstance: {fileID: 1280705852}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1280705854 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7279840187945874343, guid: da2dd75828c5d5543b8dcb22e8172d75, type: 3}
+  m_PrefabInstance: {fileID: 1280705852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1281863102
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23603,6 +23698,7 @@ MonoBehaviour:
   maxHp: 100
   currentHp: 0
   hpBar: {fileID: 391638055}
+  healVFX: {fileID: 1280705854}
   cameraTransform: {fileID: 963194228}
   groundCheckDistance: 1.2
   groundSnapSpeed: 10
@@ -23624,6 +23720,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1280705853}
   - {fileID: 356152980}
   - {fileID: 1099379751}
   - {fileID: 1514720956}

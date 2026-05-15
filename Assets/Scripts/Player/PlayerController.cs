@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public int maxHp = 5;
     public int currentHp;
     public Image hpBar;
+    public ParticleSystem healVFX;
 
     [Header("Camera Settings")]
     public Transform cameraTransform;
@@ -73,6 +74,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             { PlayerStateType.Move, new MoveState(this)},
             { PlayerStateType.Roll, new RollState(this)},
             { PlayerStateType.Attack, new AttackState(this)},
+            { PlayerStateType.Recovery, new HealState(this)},
             { PlayerStateType.Stun, new StunState(this)},
             { PlayerStateType.Dead, new DeadState(this)}
         };
@@ -118,11 +120,17 @@ public class PlayerController : MonoBehaviour, IDamageable
             inputDirection = Vector3.zero;
         }
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.E) && CurState != PlayerStateType.Recovery)
+        {
+            SetState(PlayerStateType.Recovery);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (inputDirection.sqrMagnitude >= 0.01f)
                 transform.forward = inputDirection;
             SetState(PlayerStateType.Roll);
+            return;
         }
     }
     public void SetRigidLock()
@@ -137,6 +145,19 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (rigidbody != null)
         {
             Vector3 vel = inputDirection * normalSpeed;
+            float yVel = rigidbody.linearVelocity.y;
+            vel.y = yVel;
+            rigidbody.linearVelocity = vel;
+        }
+
+        Rotate();
+    }
+
+    public void Movement(float speed)
+    {
+        if (rigidbody != null)
+        {
+            Vector3 vel = inputDirection * speed;
             float yVel = rigidbody.linearVelocity.y;
             vel.y = yVel;
             rigidbody.linearVelocity = vel;
@@ -237,5 +258,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         currentHp -= damage;
         hpBar.fillAmount = currentHp / (float)maxHp;
         if (currentHp <= 0) SetState(PlayerStateType.Dead);
+    }
+
+    public void Heal(int amount)
+    {
+        currentHp += amount;
+        hpBar.fillAmount = currentHp / (float)maxHp;
     }
 }

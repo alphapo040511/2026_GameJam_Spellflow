@@ -8,5 +8,6 @@ public enum PlayerStateType
     Roll,
     Attack,
     Stun,
+    Recovery,
     Dead,
 }

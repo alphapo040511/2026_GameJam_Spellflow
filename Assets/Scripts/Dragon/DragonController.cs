@@ -117,8 +117,8 @@ public class DragonController : MonoBehaviour
 
         if(dist >= 30)
         {
-            float ratio = dist / 60f;       // 멀어질 수록 대쉬 확률 증가
-            if (Random.value < ratio)
+            float ratio = dist / 120f;       // 멀어질 수록 대쉬 확률 증가
+            if (Random.value < dist)
             {
                 SetState(DragonStateType.Dash);
 
@@ -168,6 +168,7 @@ public class DragonController : MonoBehaviour
             { DragonStateType.BasicAttack, new AttackDragonState(this)},
             { DragonStateType.Claw, new ClawDragonState(this)},
             { DragonStateType.Flame, new FlameDragonState(this)},
+            { DragonStateType.Dash, new DashDragonState(this)},
 
             { DragonStateType.Hit, new HitDragonState(this)},
             { DragonStateType.Dead, new DeadDragonState(this)}

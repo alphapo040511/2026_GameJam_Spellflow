@@ -171,7 +171,7 @@ public class FlameDragonState : IDragonState
 
         _owner.flame.SetActive(timer >= 0.6f);
 
-        if (timer >= 4)
+        if (timer >= 5)
         {
             _owner.SetState(DragonStateType.Move);
         }
@@ -253,7 +253,20 @@ public class DashDragonState : IDragonState
 
     public void StateUpdate()
     {
+        if (target == null) return;
 
+        Vector3 dir = (target.position - _owner.transform.position);
+        dir.y = 0;
+
+        if (dir == Vector3.zero) return;
+
+        // 회전
+        Quaternion rot = Quaternion.LookRotation(dir);
+        _owner.transform.rotation = Quaternion.Slerp(
+            _owner.transform.rotation,
+            rot,
+            Time.deltaTime * _owner.rotateSpeed
+        );
     }
 
     public void StateFixedUpdate() 

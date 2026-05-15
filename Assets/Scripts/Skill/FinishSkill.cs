@@ -18,7 +18,7 @@ public class FinishSkill : SkillBase
 
         yield return new WaitForSeconds(postDelay);
 
-        Instantiate(projectile, transform.position + Vector3.forward * 5f, transform.rotation);
+        Instantiate(projectile, transform.position + transform.forward * 5f, transform.rotation);
 
         _owner.SetState(PlayerStateType.Idle);
 

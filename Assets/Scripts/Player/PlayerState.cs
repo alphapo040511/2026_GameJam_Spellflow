@@ -56,7 +56,7 @@ public class MoveState : IPlayerState
 
     public void StateUpdate()
     {
-        if (_owner.inputDirection.sqrMagnitude < 0.01f)
+        if (_owner.inputDirection.sqrMagnitude < 0.01f && _owner.CurState == PlayerStateType.Move)
         {
             _owner.SetState(PlayerStateType.Idle);
         }
@@ -193,6 +193,55 @@ public class StunState : IPlayerState
     {
 
     }
+}
+
+public class HealState : IPlayerState
+{
+    public PlayerStateType state => PlayerStateType.Recovery;
+
+    PlayerController _owner;
+
+    float lastHealtime;
+
+    public HealState(PlayerController owner)
+    {
+        _owner = owner;
+    }
+    public void StateEnter()
+    {
+        _owner.animator.SetAnim(2);
+        _owner.healVFX.Play();
+    }
+
+    public void StateUpdate()
+    {
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            _owner.SetState(PlayerStateType.Idle);
+        }
+
+        if (Time.time >= lastHealtime + 1f)
+        {
+            _owner.Heal(3);
+            lastHealtime = Time.time;
+        }
+
+
+        //_owner.RotateToMouse();
+    }
+
+    public void StateFixedUpdate()
+    {
+        _owner.Movement(3f);
+
+    }
+
+    public void StateExit()
+    {
+        _owner.healVFX.Stop();
+
+    }
+
 }
 
 public class DeadState : IPlayerState
