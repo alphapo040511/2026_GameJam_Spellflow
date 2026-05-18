@@ -94,6 +94,7 @@ public class RollState : IPlayerState
     }
     public void StateEnter()
     {
+        _owner.rollSound.Play();
         _owner.animator.SetAnim(7);
         _owner.invincibility = true;
         dir = _owner.transform.forward.normalized;
@@ -202,6 +203,7 @@ public class HealState : IPlayerState
     PlayerController _owner;
 
     float lastHealtime;
+    int totalHeal = 0;
 
     public HealState(PlayerController owner)
     {
@@ -209,13 +211,15 @@ public class HealState : IPlayerState
     }
     public void StateEnter()
     {
+        _owner.healSound.Play();
         _owner.animator.SetAnim(2);
         _owner.healVFX.Play();
+        totalHeal = 0;
     }
 
     public void StateUpdate()
     {
-        if (Input.GetKeyUp(KeyCode.E))
+        if (totalHeal >= 9)
         {
             _owner.SetState(PlayerStateType.Idle);
         }
@@ -223,6 +227,7 @@ public class HealState : IPlayerState
         if (Time.time >= lastHealtime + 1f)
         {
             _owner.Heal(3);
+            totalHeal += 2;
             lastHealtime = Time.time;
         }
 

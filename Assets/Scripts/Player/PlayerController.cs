@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     public int currentHp;
     public Image hpBar;
     public ParticleSystem healVFX;
+    public AudioSource healSound;
+    public AudioSource rollSound;
 
     [Header("Camera Settings")]
     public Transform cameraTransform;
